@@ -118,10 +118,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         super.addArgumentResolvers(argumentResolvers);
     }
 
+    /**
+     * pxs:请求前后 过滤器
+     * @param registry
+     */
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginRequiredInterceptor())
-                .addPathPatterns(Constants.BASE_API_PATH + "/**")
+                .addPathPatterns(Constants.BASE_API_PATH + "/**")  //api/v3/**
                 .excludePathPatterns(Constants.BASE_API_PATH + "/login");
 
         registry.addInterceptor(platformAuthInterceptor())

@@ -1,11 +1,13 @@
 package edp.davinci.core.utils;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+//import com.sun.org.apache.xml.internal.security.utils.Base64;
+import org.apache.commons.codec.binary.Base64;
+
 import edp.core.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+//import sun.misc.BASE64Decoder;
+//import sun.misc.BASE64Encoder;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
@@ -152,7 +154,8 @@ public class SourcePasswordEncryptUtils {
      * @throws Exception
      */
     private static PublicKey loadPublicKeyFromString(String algorithm, String keyString) throws Exception {
-        byte[] decode = Base64.decode(keyString);
+       // byte[] decode = Base64.decode(keyString);
+        byte[] decode = Base64.decodeBase64(keyString);
         KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keyspec = new X509EncodedKeySpec(decode);
         return keyFactory.generatePublic(keyspec);
@@ -177,7 +180,8 @@ public class SourcePasswordEncryptUtils {
      * @throws Exception
      */
     private static PrivateKey loadPrivateKeyFromString(String algorithm, String keyString) throws Exception {
-        byte[] decode = Base64.decode(keyString);
+        //byte[] decode = Base64.decode(keyString);
+        byte[] decode = Base64.decodeBase64(keyString);
         KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
         PKCS8EncodedKeySpec keyspec = new PKCS8EncodedKeySpec(decode);
         return keyFactory.generatePrivate(keyspec);
@@ -199,7 +203,8 @@ public class SourcePasswordEncryptUtils {
         int total = data.length;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         decodeByte(maxEncryptSize, cipher, data, total, baos);
-        return Base64.encode(baos.toByteArray());
+        //return Base64.encode(baos.toByteArray());
+        return Base64.encodeBase64String(baos.toByteArray());
     }
 
     /**
@@ -214,7 +219,8 @@ public class SourcePasswordEncryptUtils {
     private static String RSADecrypt(String encrypted, Key key, int maxDecryptSize) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM_RSA);
         cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] data = Base64.decode(encrypted);
+        //byte[] data = Base64.decode(encrypted);
+        byte[] data = Base64.decodeBase64(encrypted);
         int total = data.length;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         decodeByte(maxDecryptSize, cipher, data, total, baos);
@@ -255,7 +261,8 @@ public class SourcePasswordEncryptUtils {
             Cipher cipher = Cipher.getInstance(AES_TYPE);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] encryptedData = cipher.doFinal(cleartext.getBytes(CODE_TYPE));
-            return new BASE64Encoder().encode(encryptedData);
+            //return new BASE64Encoder().encode(encryptedData);
+            return new Base64 ().encodeAsString(encryptedData);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -270,7 +277,8 @@ public class SourcePasswordEncryptUtils {
      */
     public static String AESDecrypt(String encrypted) {
         try {
-            byte[] byteMi = new BASE64Decoder().decodeBuffer(encrypted);
+            //byte[] byteMi = new BASE64Decoder().decodeBuffer(encrypted);
+            byte[] byteMi = new Base64().decode  (encrypted);
             KeyGenerator kgen = KeyGenerator.getInstance(ALGORITHM_AES);
             String keyString = FileUtils.readFileToString(AES_BASE_PATH + AES_PRIVATE, CODE_TYPE);
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -301,8 +309,11 @@ public class SourcePasswordEncryptUtils {
         PrivateKey privateKey = keyPair.getPrivate();
         byte[] publicKeyEncoded = publicKey.getEncoded();
         byte[] privateKeyEncoded = privateKey.getEncoded();
-        String publicKeyString = Base64.encode(publicKeyEncoded);
-        String privateKeyString = Base64.encode(privateKeyEncoded);
+       // String publicKeyString = Base64.encode(publicKeyEncoded);
+       // String privateKeyString = Base64.encode(privateKeyEncoded);
+        String publicKeyString = Base64.encodeBase64String(publicKeyEncoded);
+        String privateKeyString = Base64.encodeBase64String(privateKeyEncoded);
+
         FileUtils.writeStringToFile("userfiles/" + "RSA", RSA_PUBLIC, publicKeyString, Charset.forName(CODE_TYPE));
         FileUtils.writeStringToFile("userfiles/" + "RSA", RSA_PRIVATE, privateKeyString, Charset.forName(CODE_TYPE));
 
