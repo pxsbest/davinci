@@ -60,13 +60,15 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 用户注册
-     *
-     * @param userRegist
-     * @param bindingResult
-     * @return
-     */
+        /**
+         * 用户注册:
+         *
+         * pxs: 此对应的请求api为: api/v3/users, 此方法的注解中未映射到这个api,但实际为什么会映射命中呢?
+         * 原因是:该Controller中只有该方法没有标注映射地址,所以默认请求controller上地址,就直接命中它了
+         * @param userRegist
+         * @param bindingResult
+         * @return
+         */
     @ApiOperation(value = "insert user")
     @AuthIgnore
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

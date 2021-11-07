@@ -33,6 +33,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+/**
+ * pxs: 全局异常捕获
+ */
 
 @ControllerAdvice(annotations = RestController.class)
 @Slf4j

@@ -47,6 +47,7 @@ public class TokenUtils {
 
     /**
      * 自定义 token 私钥
+     * pxs: 这个Bean的值 来自于 DavinciServletApplication类中的 TOKEN_SECRET()
      */
     @Autowired
     private String TOKEN_SECRET;
@@ -166,6 +167,7 @@ public class TokenUtils {
         Long expiration = Long.parseLong(claims.get(Consts.TOKEN_CREATE_TIME) + EMPTY) + timeOutMillis;
 
         try {
+            //使用了JWT 生成 Token
             return Jwts.builder()
                     .setClaims(claims)
                     .setSubject(claims.get(Consts.TOKEN_USER_NAME).toString())

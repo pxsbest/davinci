@@ -29,6 +29,7 @@
     </modules>
 
     <properties>
+<!--Maven:内置属性,project.basedir:表示项目的根目录         -->
         <main.basedir>${project.basedir}</main.basedir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

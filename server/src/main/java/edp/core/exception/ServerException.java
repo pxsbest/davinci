@@ -19,6 +19,10 @@
 
 package edp.core.exception;
 
+/*
+* pxs: 全局异常捕获?
+*
+* */
 public class ServerException extends RuntimeException {
     public ServerException(String message) {
         super(message);

@@ -57,6 +57,11 @@ public class HomeController {
     @AuthIgnore
     @ResponseBody
     public Map<String, Object> configurations() {
+
+        String cusConfig = environment.getProperty("pxs.do");
+        System.out.println("environment.getProperty()获取配置:"+cusConfig);
+
+
         Map<String, Object> configs = new HashMap<>();
         configs.put("version", environment.getProperty("davinci.version"));
         configs.put("jwtToken", new HashMap<String, Object>() {{
